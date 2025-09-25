@@ -1,0 +1,2007 @@
+
+<!DOCTYPE html>
+<html lang="id">
+	<head>
+		<meta charset="UTF-8">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Platform Digital Pembinaan UMKM Sleman</title> 
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+		<link rel="icon" type="image/jpeg" href="/img/smart_icon.jpg">
+		<style>
+			body, html {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background: #f7f7f7; /* Warna putih susu */
+			font-family: 'Segoe UI', sans-serif;
+			}
+			
+			.container {
+			max-width: 1080px;
+			}
+			
+			.navbar {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			background-color: #fff;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			}
+			
+			.navbar-brand, .nav-link {
+			color: #333;
+			transition: color 0.3s ease;
+			}
+			
+			.nav-link:hover {
+			color: #b9088d;
+			}
+			
+			.nav-item {
+			animation: fadeInLeft 1s ease-out;
+			}
+			
+			@keyframes fadeInLeft {
+			0% {
+			opacity: 0;
+			transform: translateX(-30px);
+			}
+			100% {
+			opacity: 1;
+			transform: translateX(0);
+			}
+			}
+			
+			.icon {
+			font-size: 1.5rem;
+			transition: transform 0.3s ease;
+			}
+			
+			.icon:hover {
+			transform: scale(1.2);
+			color: #b9088d;
+			}
+			
+			.hero-section {
+			padding: 50px 0;
+			text-align: center;
+			background-color: #fff;
+			}
+			
+			.hero-title {
+			font-size: 2.5rem;
+			font-weight: bold;
+			color: #333;
+			margin-bottom: 20px;
+			}
+			
+			.hero-description {
+			font-size: 1.2rem;
+			color: #777;
+			}
+			
+			.hero-title {
+			color: #b9088d; /* merah maroon */
+			font-size: 2.5rem;
+			font-weight: bold;
+			margin-bottom: 15px;
+			}		
+			
+			
+			/* Styling untuk menu floating */
+			
+			.floating-menu {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+			}
+			
+			.floating-menu a {
+            display: block;
+            width: 50px; /* Ukuran ikon */
+            height: 50px; /* Ukuran ikon */
+            background-color: #25d366; /* Warna hijau WhatsApp */
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 10px;
+            border-radius: 50%; /* Membuat bentuk lingkaran */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            margin-bottom: 30px; /* Memberikan jarak antar ikon */
+			}
+			
+			.floating-menu a.literasi {
+            background-color: #4CAF50; /* Warna hijau Literasi */
+			}
+			
+			/* Efek hover */
+			.floating-menu a:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+			}
+			
+			.floating-menu a i {
+            font-size: 1.5rem; /* Ukuran ikon */
+            line-height: 1.5;
+			}
+		</style>
+		
+		
+	</style>
+</head> 
+<body>
+	
+	<!-- Navbar Sticky -->
+	<style>
+/* Biar tombol "Cari" berwarna #b9088d */
+.btn-primary {
+  background-color: #b9088d;
+  border-color: #b9088d;
+}
+
+/* Tambahan: Saat hover, warnanya lebih gelap sedikit */
+.btn-primary:hover {
+  background-color: #9a076f;
+  border-color: #9a076f;
+}
+
+/* Efek Fade dan Zoom */
+.modal.fade .modal-dialog {
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal.show .modal-dialog {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Pastikan Modal tetap di tengah */
+.modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - 1rem);
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <img src="img/slemanmartlogo.png" height="60px">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" href="/pasar-sleman">
+            <i class="fas fa-home icon"></i> Beranda
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#filterModal">
+            <i class="fas fa-search icon"></i> Cari
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <form action="cari-produk" method="GET">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterModalLabel">Filter Pencarian Produk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          
+          <!-- Pilih Jenis Produk -->
+          <div class="mb-3">
+            <label for="jenis" class="form-label">Jenis Produk</label>
+            <select class="form-select" id="jenis" name="jenis">
+              <option value="0">-- Semua Jenis --</option>
+              <option value="1">Kuliner Siap Saji</option>
+              <option value="2">Kue dan Camilan</option>
+              <option value="3">Olahan Kemasan dan Frozen</option>
+              <option value="4">Fashion dan Aksesoris</option>
+              <option value="5">Kain Batik, Eco Print dan Jumputan</option>
+              <option value="6">Furnitur dan Dekorasi</option>
+              <option value="7">Herbal Kesehatan dan Kecantikan</option>
+              <option value="8">Produk Digital</option>
+              <option value="9">Servis Elektronik dan Bengkel</option>
+              <option value="10">Jasa lainnya</option>
+            </select>
+          </div>
+
+          <!-- Nama Produk -->
+          <div class="mb-3">
+            <label for="nama_produk" class="form-label">Nama Produk</label>
+            <input type="text" class="form-control" id="nama_produk" name="nama_produk" placeholder="Masukkan nama produk...">
+          </div>
+
+          <!-- Nama Usaha Penjual -->
+          <div class="mb-3">
+            <label for="nama_usaha" class="form-label">Nama Usaha Penjual</label>
+            <input type="text" class="form-control" id="nama_usaha" name="nama_usaha" placeholder="Masukkan nama usaha...">
+          </div>
+
+          <!-- Lokasi Penjual -->
+          <div class="mb-3">
+            <label for="lokasi_penjual" class="form-label">Lokasi Penjual</label>
+            <input type="text" class="form-control" id="lokasi_penjual" name="lokasi_penjual" placeholder="Masukkan lokasi...">
+          </div>
+
+       </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Cari</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+ 
+	<!-- Hero Section -->
+		<style>
+    .menu-wrapper {
+    padding: 30px 0;
+    }
+    
+    .menu-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 0;
+    max-width: 100%;
+    }
+    
+    .menu-item {
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 100px;
+    flex: 0 0 auto;
+    }
+    
+    .menu-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(185, 8, 141, 0.3);
+    background-color: #ffffff;
+    }
+    
+    .menu-item i {
+    font-size: 2rem; /* lebih kecil */
+    color: #b9088d;
+    margin-bottom: 6px;
+    }
+    
+    .menu-label {
+    font-size: 0.8rem; /* lebih kecil */
+    font-weight: 500;
+    color: #000000;
+    margin-top: 3px;
+    }
+    
+    .menu-item a {
+    text-decoration: none;
+    color: inherit;
+    }
+    
+    hr.menu-line {
+    border: none;
+    border-top: 2px solid #b9088d;
+    width: 100px;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Untuk layar kecil: scroll horizontal */
+    @media (max-width: 768px) {
+    .menu-icons {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 15px;
+    scroll-snap-type: x mandatory;
+    justify-content: flex-start;
+    }
+    
+    .menu-item {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    }
+    }
+    
+    /* Supaya desktop kecil pun bisa scroll */
+    @media (max-width: 1024px) {
+    .menu-icons {
+    overflow-x: auto;
+    }
+    }
+</style>
+
+<section class="hero-section">
+    <div style="text-align: center; color: #b9088d; background-color: #fff; font-size: 1.8rem; font-weight: 600; margin-bottom: 1.5rem;">
+        Pasar Produk UMKM Slemanmart    </div>
+    
+    <div class="container">
+        <div class="menu-wrapper">
+            <hr class="menu-line">
+            <div class="menu-icons">
+                <div class="menu-item">
+                    <a href="kuliner-siap-saji">
+                        <i class="fas fa-utensils"></i>
+                        <div class="menu-label">Kuliner Siap Saji</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="kue-dan-camilan">
+                        <i class="fas fa-cookie-bite"></i>
+                        <div class="menu-label">Kue dan Camilan</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="olahan-kemasan-dan-frozen">
+                        <i class="fas fa-ice-cream"></i>
+                        <div class="menu-label">Olahan Kemasan dan Frozen</div>
+                    </a>
+                </div>
+				<div class="menu-item">
+                    <a href="daging-ikan-dan-pertanian">
+                        <i class="fas fa-fish"></i>
+                        <div class="menu-label">Daging Ikan dan Produk Pertanian</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="fashion-dan-aksesoris">
+                        <i class="fas fa-tshirt"></i>
+                        <div class="menu-label">Fashion dan Aksesoris</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="kain-batik-eco-print-dan-jumputan">
+                        <i class="fas fa-ribbon"></i>
+                        <div class="menu-label">Kain Batik, Eco Print dan Jumputan</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="furnitur-dan-dekorasi">
+                        <i class="fas fa-couch"></i>
+                        <div class="menu-label">Furnitur, Craft dan Dekorasi</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="herbal-kesehatan-dan-kecantikan">
+                        <i class="fas fa-seedling"></i>
+                        <div class="menu-label">Herbal Kesehatan dan Kecantikan</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="produk-digital">
+                        <i class="fas fa-laptop-code"></i>
+                        <div class="menu-label">Produk Digital</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="servis-elektronik-dan-bengkel">
+                        <i class="fas fa-tools"></i>
+                        <div class="menu-label">Servis Elektronik dan Bengkel</div>
+                    </a>
+                </div>
+                <div class="menu-item">
+                    <a href="jasa-lainnya">
+                        <i class="fas fa-concierge-bell"></i>
+                        <div class="menu-label">Jasa lainnya</div>
+                    </a>
+                </div>
+            </div>
+            <hr class="menu-line">
+        </div>
+    </div>
+</section>
+ 
+	
+	
+	<!-- Gallery Section -->
+	<style>
+	.gallery-section {
+	background-color: #ffffff;
+	padding: 50px 0;
+	}
+	
+	.product-card {
+	transition: transform 0.3s ease-in-out;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+	
+	.product-card:hover {
+	transform: scale(1.05);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+	}
+	
+	.product-img {
+	width: 100%;
+	height: auto;
+	object-fit: cover;
+	transition: opacity 0.3s ease;
+	}
+	
+	.product-card-body {
+	padding: 15px;
+	text-align: center;
+	background-color: #f9f9f9;
+	}
+	
+	.product-title {
+	font-size: 1.1rem;
+	font-weight: bold;
+	color: #333;
+	margin: 10px 0;
+	}
+	
+	.product-ukm {
+	font-size: 0.9rem;
+	color: #666;
+	}
+	
+	.product-price {
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #28a745;
+	}
+	
+	.modal-content {
+	background-color: #f9f9f9;
+	}
+	
+	.modal-body img {
+	max-width: 100%;
+	border-radius: 10px;
+	}
+	
+	/* Responsif untuk galeri */
+	@media (max-width: 768px) {
+	.product-card {
+	margin-bottom: 30px;
+	}
+	.product-card {
+	width: 45%;
+	}
+	}
+	
+	@media (min-width: 769px) {
+	.product-card {
+	width: 22%;
+	margin: 0 15px 30px 15px;
+	}
+	}
+	
+	.card:hover {
+	transform: scale(1.05);
+	transition: transform 0.3s ease-in-out;
+	}
+	
+	.text-pink {
+	color: #b9088d;
+	}
+	
+</style>
+
+<section class="gallery-section">
+	<div class="container">
+		<div id="produk-container" class="row g-4 justify-content-center">
+						
+								
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60133">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/FunPic_20240506_134319572.jpg" class="card-img-top" alt="Nuget ayam sayur wortel brokoli" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Nuget Ayam Sayur Wortel Brokoli</h5>
+								<p class="card-text text-success">Rp 230.000</p>
+								<p class="card-text text-muted">Jackoo Foods, Taman Martani</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60133" tabindex="-1" aria-labelledby="productModalLabel60133" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60133">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/FunPic_20240506_134319572.jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Nuget Ayam Sayur Wortel Brokoli</h5>
+									<p class="text-success">Rp 230.000</p>
+									<p class="card-text text-muted">Jackoo Foods </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Bugisan Rt 4 Rw 2 Tamanmartani Kalasan Sleman Yogyakarta, Taman Martani											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6285729870721?text=Saya%20tertarik%20membeli%20Nuget%20ayam%20sayur%20wortel%20brokoli%20%28Rp%20230.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Nuget ayam dengan bumbu rempah alami tanpa penyedap tanpa pengawet mix parutan wortel brokoli. 200 grm<br />
+*Tahan 3bulan dalam frezer<br />
+*Tawwing dari frezer dan goreng dengan minyak sedang (tidak terlalu panas).</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60115">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/IMG_7959.JPG" class="card-img-top" alt="KEYNA WOMEN" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">KEYNA WOMEN</h5>
+								<p class="card-text text-success">Rp 1.456.000</p>
+								<p class="card-text text-muted">Keewa Shoes, Wedomartani</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60115" tabindex="-1" aria-labelledby="productModalLabel60115" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60115">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/IMG_7959.JPG" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">KEYNA WOMEN</h5>
+									<p class="text-success">Rp 1.456.000</p>
+									<p class="card-text text-muted">Keewa Shoes </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Puri Domas A22 Sempu, Wedomartani											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/628122697307?text=Saya%20tertarik%20membeli%20KEYNA%20WOMEN%20%28Rp%201.456.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Halo Keewaholic...<br />
+Welcome to Rumah Keewa.<br />
+Semua sepatu yang ada di store kami 100% terbuat dari KULIT ASLI. Kami menjamin bahwa produk kami adalah Sepatu Kulit yang memiliki kualitas Premium.<br />
+<br />
+❤️KEEWA BERGARANSI SEUMUR HIDUP❤️<br />
+Sistem garansi dari keewa, apabila ada kerusakan pada Lem atau benang jahitan yang lepas dapat di perbaiki di keewa tanpa dipungut biaya. Keewa juga dapat memperbaiki sole yang rusak dan repain warna sepatu yang pudar, seluruh kerusakan pada sepatu keewa bisa di klaimkan garansi kecuali untuk kulit sepatu yang robek.<br />
+<br />
+Construction: Lasting + Full Llining<br />
+<br />
+Process: Hand Made<br />
+<br />
+Upper Material : Leather Full Grain - Softy Nappa + Goat Lining<br />
+<br />
+Sole Material : Thermoplastic Rubber<br />
+<br />
+Socks : Goat Leather + Memory Foam<br />
+<br />
+SIZE CHART WOMEN<br />
+36 = 22cm<br />
+37 = 23cm<br />
+38 = 23,5cm<br />
+39 = 24cm<br />
+40 = 25cm<br />
+41 = 26cm<br />
+<br />
+SIZE CHART MEN<br />
+39 = 24,5cm<br />
+40 = 25cm<br />
+41 = 25,5cm<br />
+42 = 26cm<br />
+43 = 27cm<br />
+44 = 28cm<br />
+45 = 29cm<br />
+46 = 29,5cm<br />
+47 = 31,5cm<br />
+48 = 32cm<br />
+<br />
+PANDUAN UKURAN<br />
+1. siapkan penggaris, kertas kosong, dan bolpoin<br />
+2. pijakkan kaki pada kertas, tandai pada ujung jempol atau jari tengah dan tandai juga pada bagian tumit paling belakang yang menyentuh dinding sepatu. (gambar bentuk kaki diatas kertas)<br />
+3. ukur dengan peenggaris dari ujung jempol atau jari tengah sampai ujung tumit.<br />
+<br />
+Apabila ada yang ingin di tanyakan, atau ada hal yang kurang jelas bisa langsung chat admin kita melalui WA 081548107600 ya kak. Rumah Keewa beralamatkan di Perum Puri Domas A22, Sempu Wedomartani Ngemplak Sleman Yogyakarta. Toko kami buka pada hari Senin - Minggu pukul 08.00 - 17.00<br />
+<br />
+SEPATU YANG MENGIKUTI PROMO DISKON TIDAK DAPAT DI TUKAR ATAU DIKEMBALIKAN.<br />
+<br />
+Happy shopping!!</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60107">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (24).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Original Kemasan 1000gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Original Kemasan 1000gr</h5>
+								<p class="card-text text-success">Rp 145.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60107" tabindex="-1" aria-labelledby="productModalLabel60107" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60107">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (24).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Original Kemasan 1000gr</h5>
+									<p class="text-success">Rp 145.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Original%20Kemasan%201000gr%20%28Rp%20145.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Original adalah produk yang dijual dengan kemasan standing pouch 1.000gr. Produk ini terdiri dari stick kentang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60106">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (23).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Kacang Kemasan 1000gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Kacang Kemasan 1000gr</h5>
+								<p class="card-text text-success">Rp 150.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60106" tabindex="-1" aria-labelledby="productModalLabel60106" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60106">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (23).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Kacang Kemasan 1000gr</h5>
+									<p class="text-success">Rp 150.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Kacang%20Kemasan%201000gr%20%28Rp%20150.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Kacang adalah produk yang dijual dengan kemasan standing pouch 1.000gr. Produk ini terdiri dari stick kentang bercampur dengan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60105">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (22).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Teri Medan Kemasan 1000gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 1000gr</h5>
+								<p class="card-text text-success">Rp 151.500</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60105" tabindex="-1" aria-labelledby="productModalLabel60105" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60105">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (22).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 1000gr</h5>
+									<p class="text-success">Rp 151.500</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Teri%20Medan%20Kemasan%201000gr%20%28Rp%20151.500%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Teri Medan adalah produk yang dijual dengan kemasan standing pouch 1.000gr. Produk ini terdiri dari stick kentang bercampur dengan teri medan yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60103">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (21).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Mix Kemasan 1000gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Mix Kemasan 1000gr</h5>
+								<p class="card-text text-success">Rp 153.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60103" tabindex="-1" aria-labelledby="productModalLabel60103" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60103">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (21).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Mix Kemasan 1000gr</h5>
+									<p class="text-success">Rp 153.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Mix%20Kemasan%201000gr%20%28Rp%20153.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys mix adalah produk yang dijual dengan kemasan standing pouch 1.000gr. Produk ini terdiri dari stick kentang bercampur dengan teri medan dan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60102">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (20).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Teri Medan Kemasan 500gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 500gr</h5>
+								<p class="card-text text-success">Rp 77.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60102" tabindex="-1" aria-labelledby="productModalLabel60102" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60102">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (20).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 500gr</h5>
+									<p class="text-success">Rp 77.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Teri%20Medan%20Kemasan%20500gr%20%28Rp%2077.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Teri Medan adalah produk yang dijual dengan kemasan standing pouch 500gr. Produk ini terdiri dari stick kentang bercampur dengan teri medan yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60101">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (19).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Original Kemasan 500gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Original Kemasan 500gr</h5>
+								<p class="card-text text-success">Rp 73.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60101" tabindex="-1" aria-labelledby="productModalLabel60101" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60101">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (19).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Original Kemasan 500gr</h5>
+									<p class="text-success">Rp 73.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Original%20Kemasan%20500gr%20%28Rp%2073.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Original adalah produk yang dijual dengan kemasan standing pouch 500gr. Produk ini terdiri dari stick kentang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60100">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (18).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Kacang Kemasan 500gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Kacang Kemasan 500gr</h5>
+								<p class="card-text text-success">Rp 75.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60100" tabindex="-1" aria-labelledby="productModalLabel60100" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60100">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (18).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Kacang Kemasan 500gr</h5>
+									<p class="text-success">Rp 75.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Kacang%20Kemasan%20500gr%20%28Rp%2075.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Kacang adalah produk yang dijual dengan kemasan standing pouch 500gr. Produk ini terdiri dari stick kentang bercampur dengan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60099">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (17).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Mix Kemasan 500gr" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Mix Kemasan 500gr</h5>
+								<p class="card-text text-success">Rp 78.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60099" tabindex="-1" aria-labelledby="productModalLabel60099" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60099">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (17).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Mix Kemasan 500gr</h5>
+									<p class="text-success">Rp 78.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Mix%20Kemasan%20500gr%20%28Rp%2078.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys mix adalah produk yang dijual dengan kemasan standing pouch 500gr. Produk ini terdiri dari stick kentang bercampur dengan teri medan dan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60098">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (16).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Mix Kemasan 340ml" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Mix Kemasan 340ml</h5>
+								<p class="card-text text-success">Rp 24.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60098" tabindex="-1" aria-labelledby="productModalLabel60098" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60098">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (16).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Mix Kemasan 340ml</h5>
+									<p class="text-success">Rp 24.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Mix%20Kemasan%20340ml%20%28Rp%2024.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Mix adalah produk yang dijual dengan kemasan 340ml. Produk ini terdiri dari stick kentang bercampur dengan teri medan dan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60097">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul (1).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Teri Medan Kemasan 340ml" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 340ml</h5>
+								<p class="card-text text-success">Rp 23.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60097" tabindex="-1" aria-labelledby="productModalLabel60097" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60097">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul (1).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Teri Medan Kemasan 340ml</h5>
+									<p class="text-success">Rp 23.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Teri%20Medan%20Kemasan%20340ml%20%28Rp%2023.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Teri Medan adalah produk yang dijual dengan kemasan 340ml. Produk ini merupakan stick kentang bercampur teri medan yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60096">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/Desain tanpa judul(11).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Kacang Kemasan 340ml" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Kacang Kemasan 340ml</h5>
+								<p class="card-text text-success">Rp 22.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60096" tabindex="-1" aria-labelledby="productModalLabel60096" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60096">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/Desain tanpa judul(11).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Kacang Kemasan 340ml</h5>
+									<p class="text-success">Rp 22.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Kacang%20Kemasan%20340ml%20%28Rp%2022.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Kacang adalah produk yang dijual dengan kemasan 340ml. Produk ini terdiri dari stick kentang dan kacang yang memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60095">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/20240628_132815_0000(2).jpg" class="card-img-top" alt="Kentang Mustofa Winny&#039;s Original Kemasan 340ml" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Kentang Mustofa Winny&#039;s Original Kemasan 340ml</h5>
+								<p class="card-text text-success">Rp 21.000</p>
+								<p class="card-text text-muted">Winnys Dapur MM, Suko Harjo</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60095" tabindex="-1" aria-labelledby="productModalLabel60095" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60095">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/20240628_132815_0000(2).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Kentang Mustofa Winny&#039;s Original Kemasan 340ml</h5>
+									<p class="text-success">Rp 21.000</p>
+									<p class="card-text text-muted">Winnys Dapur MM </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Perum Griya Perwita Wisata Jl. Kenanga No 4-5, Besi, Suko Harjo											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/6281779008595?text=Saya%20tertarik%20membeli%20Kentang%20Mustofa%20Winny%27s%20Original%20Kemasan%20340ml%20%28Rp%2021.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Kentang Mustofa Winnys Original adalah produk yang dijual dengan kemasan 340ml. Produk ini memiliki tekstur renyah/crunchy, garing dan tidak berminyak.  Rasa dari produk ini manis pedas gurih dari sambal balado yang berkaramel. Selain itu keunggulan dari produk ini adalah dapat disimpan dalam jangka waktu lama pada suhu ruang dengan selalu memastikan wadah tertutup rapat.  Selain itu produk Kentang Mustofa Winny&#039;s tidak menggunakan bahan pengawet, tidak menggunakan pewarna, menggunakan bahan organik dan fresh/segar, bebas kafein, halal, aman untuk usia mulai anak - anak sampai dengan lansia. Produk ini sangat cocok untuk Anda yang ingin menikmati makanan yang praktis dan mudah disajikan. Kami pastikan Anda dapat menikmati sensasi renyah, garing dan tidak berminyak dalam setiap gigitannya.</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+										
+					<!-- Product Cards (30 Produk) -->
+					<div class="col-md-4 col-sm-6 col-12">
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal60094">
+							<div class="ratio ratio-1x1 card-img-top-wrapper">
+																	<img src="/files/IMG-20240628-WA0002(3).jpg" class="card-img-top" alt="Dimsum" style="object-fit: contain;">
+									<!--		
+										<div class="d-flex justify-content-center align-items-center bg-secondary text-white" style="height: 100%;">
+										<p class="text-center mb-0">Gambar Tidak Tersedia</p>
+										</div> 
+									-->
+															</div>
+							<div class="card-body d-flex flex-column">
+								<h5 class="card-title" style="color:#b9088d">Dimsum</h5>
+								<p class="card-text text-success">Rp 25.000</p>
+								<p class="card-text text-muted">WIRASWASTA, Wedomartani</p>
+								
+							</div>
+						</div>
+					</div>
+					
+					<!-- Modal -->
+					<div class="modal fade" id="productModal60094" tabindex="-1" aria-labelledby="productModalLabel60094" aria-hidden="true">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="productModalLabel60094">Informasi Produk</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="ratio ratio-1x1 mb-3">
+										<img src="/files/IMG-20240628-WA0002(3).jpg" alt="Detail Product" class="img-fluid" style="object-fit: contain; border-radius: 10px;">
+									</div>
+									<h5 class="card-title text-pink">Dimsum</h5>
+									<p class="text-success">Rp 25.000</p>
+									<p class="card-text text-muted">WIRASWASTA </p>
+									
+									
+									
+									<div class="row align-items-center">
+										<!-- Kiri: Info Lembaga -->
+										<div class="col-md-9 mb-4 mb-md-0">										
+											
+											<p class="mb-2">
+												<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+												Griya Kampung Asri 2 No B3 Pokoh Wedomartani Ngemplak, Wedomartani											</p>
+											
+											
+											
+											
+										</div>												
+										
+									</div>
+									
+									<p class="mt-4 mb-2 text-end">											
+										<!-- Tambahkan ini di bagian <head> jika belum ada -->
+										<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+										
+										
+										
+										<!-- Tombol WhatsApp dengan warna burgundy, ukuran besar, dan ikon -->
+																				
+										<a href="https://wa.me/62819850107?text=Saya%20tertarik%20membeli%20Dimsum%20%28Rp%2025.000%29" 
+										target="_blank" 
+										class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+											<i class="bi bi-cart-fill me-2"></i>Belanja Sekarang
+										</a>																								
+										
+									</p>
+									<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+									<p>Dimsum ayam dengan topping jamur, wortel atau sosis ayam... Disajikan dengan saus per pack isi 8 pcs mix topping... Expired 3 hari</p> <!-- Menambahkan Line Break -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+								
+		</div>
+		<div id="loading" class="text-center my-4" style="display: none;">
+			<div class="spinner-border text-primary" role="status"></div>
+		</div>
+	</div>
+</section>
+
+<div id="produk-container" class="row"></div>
+
+<div id="modals-container"></div> <!-- Tambahin container khusus buat modal -->
+
+<!-- <div id="loading" style="text-align:center; padding:20px; display:none;">
+<span>Loading...</span>
+</div> -->
+
+<!-- <div id="load-more-container" style="text-align:center; padding:20px;">
+<button id="load-more-btn" class="btn btn-primary">Lihat 15 Produk Berikutnya</button>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+ 
+	
+	
+	<script>
+		let page = 2;
+		let loading = false;
+		
+		function formatWhatsAppNumber(number) {
+			if (!number) return '';
+			let cleaned = number.replace(/\D/g, '');
+			cleaned = cleaned.replace(/^0+/, '');
+			if (!cleaned.startsWith('62')) {
+				cleaned = '62' + cleaned;
+			}
+			return cleaned;
+		}
+		
+		function loadProduk() {
+			if (loading) return;
+			loading = true;
+			document.getElementById('loading').style.display = 'block';
+			
+			fetch('../res/psr_gallery_scroll.php?page=' + page)
+			.then(response => response.json())
+			.then(data => {
+				if (data.length > 0) {
+					const container = document.getElementById('produk-container');
+					const modalsContainer = document.getElementById('modals-container');
+					
+					data.forEach(item => {
+						// --- CARD PRODUK ---
+						const col = document.createElement('div');
+						col.className = 'col-md-4 col-sm-6 col-12';
+						col.innerHTML = `
+						<div class="card h-100" data-bs-toggle="modal" data-bs-target="#productModal${item.id}">
+						<div class="ratio ratio-1x1 card-img-top-wrapper">
+						<img src="files/${item.foto_produk}" onerror="this.onerror=null;this.src='https://sibakuljogja.jogjaprov.go.id/files/${item.foto_produk}';" class="card-img-top" alt="${item.produk_nama}" style="object-fit: contain;">
+						</div>
+						<div class="card-body d-flex flex-column">
+						<h5 class="card-title" style="color:#b9088d">${item.produk_nama}</h5>
+						<p class="card-text text-success">Rp ${parseInt(item.harga).toLocaleString('id-ID')}</p>
+						<p class="card-text text-muted">${item.namausaha}, ${item.kalurahan.toLowerCase()}</p>
+						</div>
+						</div>
+						`;
+						container.appendChild(col);
+						
+						// --- MODAL PRODUK ---
+						const modal = document.createElement('div');
+						modal.className = 'modal fade';
+						modal.id = `productModal${item.id}`;
+						modal.setAttribute('tabindex', '-1');
+						modal.setAttribute('aria-labelledby', `productModalLabel${item.id}`);
+						modal.setAttribute('aria-hidden', 'true');
+						modal.innerHTML = `
+						<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title" id="productModalLabel${item.id}">Informasi Produk</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+						<img src="files/${item.foto_produk}" onerror="this.onerror=null;this.src='https://sibakuljogja.jogjaprov.go.id/files/${item.foto_produk}';" class="img-fluid" style="object-fit: contain; border-radius: 10px;" alt="${item.produk_nama}">
+						<h5 class="card-title text-pink">${item.produk_nama.toLowerCase()}</h5>
+						<p class="text-success">Rp ${parseInt(item.harga).toLocaleString('id-ID')}</p>
+						<p class="card-text text-muted"> ${item.namausaha}, ${item.kalurahan.toLowerCase()}</p>
+						<div class="row align-items-center">
+						<!-- Kiri: Info Lembaga -->
+						<div class="col-md-9 mb-4 mb-md-0">
+						
+						<p class="mb-2">
+						<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+						${item.alamat_usaha.toLowerCase()}, ${item.kalurahan.toLowerCase()} 
+						</p>
+						
+						
+				
+			
+				
+				
+				
+				
+			</div> 
+			<p class="mb-2 mt-4 text-end">
+						
+						${
+						item.no_hpusaha
+						? `<a href="https://wa.me/${formatWhatsAppNumber(item.no_hpusaha)}?text=Saya%20tertarik%20membeli%20${encodeURIComponent(item.produk_nama)}%20(Rp%20${parseInt(item.harga).toLocaleString('id-ID')})" 
+                                                   target="_blank" class="btn btn-lg text-white" 
+										style="background-color: #800020;">
+                                                    <i class="fas fa-shopping-cart me-2"></i>Belanja Sekarang
+                                                </a>`
+					: `<a href="https://wa.me/6282322798318?text=Halo%20Admin%20SlemanMart" target="_blank" class="text-decoration-none text-muted">
+						Belum tersedia, hubungi admin di 082322798318
+					</a>`
+					}
+				</p>
+		</div>
+		<hr><h5 class="modal-title">Uraian Produk</h5><hr>
+		<p> ${item.produk_desc}</p>
+	</div>
+</div>
+</div>
+`;
+modalsContainer.appendChild(modal);
+});
+
+page++;
+loading = false;
+document.getElementById('loading').style.display = 'none';
+} else {
+// Kalau data sudah habis
+document.getElementById('load-more-container').style.display = 'none';
+document.getElementById('loading').innerHTML = '<p>Semua produk sudah ditampilkan.</p>';
+}
+})
+.catch(error => {
+console.error('Error loading produk:', error);
+loading = false;
+});
+}
+
+// Event untuk klik tombol "Load More"
+document.getElementById('load-more-btn').addEventListener('click', function() {
+loadProduk();
+});
+
+// Load pertama kali 15 produk
+loadProduk();
+</script> 
+	
+	<hr>
+<section class="gallery-section py-5 bg-light">
+	<div class="container">
+		<div class="row align-items-center">
+			<!-- Kiri: Info Lembaga -->
+			<div class="col-md-6 mb-4 mb-md-0">
+				<h3 class="mb-3">SlemanMart</h3>
+				<h5 class="text-muted mb-4">Dinas Koperasi dan UKM Kabupaten Sleman</h5>
+				
+				<p class="mb-2">
+					<i class="fas fa-map-marker-alt me-2 text-danger"></i>
+					Jl. Parasamya No.6, Beran, Tridadi, Sleman
+				</p>
+				
+				<p class="mb-2">
+					<i class="fab fa-whatsapp me-2 text-success"></i>
+					<a href="https://wa.me/6282322798318?text=Salam%20SlemanMart" target="_blank" class="text-decoration-none text-dark">
+						+62 823 2279 8318
+					</a>
+				</p>
+				
+				<p class="mb-2">
+					<i class="fab fa-instagram me-2 text-danger"></i>
+					<a href="https://instagram.com/dinkopukmsleman" target="_blank" class="text-decoration-none text-dark">
+						@dinkopukmsleman
+					</a>
+				</p>
+				
+				<p>
+					<i class="fas fa-globe me-2 text-primary"></i>
+					<a href="https://dinkopukm.slemankab.go.id/" target="_blank" class="text-decoration-none text-dark">
+						dinkopukm.slemankab.go.id
+					</a>
+				</p>
+			</div>
+			
+			<!-- Kanan: Peta -->
+			<div class="col-md-6">
+				<div id="map" style="height: 300px; width: 100%;"></div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+	// Inisialisasi peta
+	var map = L.map('map').setView([-7.7178025, 110.3544013], 13); // Titik SlemanMart
+	
+	// Menambahkan tile layer (OpenStreetMap)
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+	
+	// Menambahkan marker di koordinat SlemanMart
+	var marker = L.marker([-7.7178025, 110.3544013]).addTo(map);
+	
+	// Menambahkan popup yang akan muncul saat marker diklik
+	marker.bindPopup("<b>SlemanMart<br> Dinas Koperasi dan UKM Kabupaten Sleman<br><br>WA: +62 823-2279-8318</b><br><a href='https://maps.app.goo.gl/iPNUKPNKLAFKGdyT6' target='_blank'>Arah Menuju Lokasi</a>");
+</script> 
+	<!-- Footer -->
+	<footer class="bg-light py-4">
+	<div class="container">
+		<!-- Menu Footer -->
+		<div class="row justify-content-center mb-4">
+			<div class="col-auto">
+				<ul class="nav">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Beranda</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/profil">Profil</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/syarat-ketentuan">Syarat Ketentuan</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="/pasar-sleman">Pasar Sleman</a>
+					</li>						
+					<li class="nav-item">
+						<a class="nav-link" href="/literasi">Literasi</a>
+					</li>
+					
+				</ul>
+			</div>
+		</div>
+		
+		<!-- Copyright Caption -->
+		<div class="text-center text-muted">
+			<small>&copy; Slemanmart 2020-2025 - Dinas Koperasi dan UMKM Kabupaten Sleman</small>
+		</div>
+	</div>
+</footer>
+<!-- Menu Floating -->
+<div class="floating-menu">
+	<!-- Ikon Literasi -->
+	<a href="/panduan" class="literasi">
+		<i class="fas fa-book"></i>
+	</a>
+	
+	<!-- Ikon WhatsApp -->
+	<a href="https://wa.me/6282322798318?text=Salam%20SlemanMart" target="_blank">
+		<i class="fab fa-whatsapp"></i>
+	</a>
+</div> 
+	
+	<!-- Bootstrap JS & Popper.js -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+	
+	<!-- Link ke Leaflet JS -->
+</body>
+</html>
